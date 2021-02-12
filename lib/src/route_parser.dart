@@ -11,7 +11,7 @@ class RouteParser {
 
   List<String> get segments => _uri.pathSegments;
 
-  RouteParser(String path) : _uri = Uri(path: RouteFormatter.format(path));
+  RouteParser(String path) : _uri = Uri(path: format(path));
 
   static String format(String path) {
     return RouteFormatter.format(path);
