@@ -14,9 +14,9 @@ import 'package:route_parser/route_parser.dart';
 RouteParser('/route').match('/route');
 RouteParser('/route/*').match('/route/any');
 RouteParser('/route/**').match('/route/any/with/look/ahead');
-RouteParser('/route/:args').match('/route/100'); // match with args
-final parser = RouteParser('/test/withargs/:id/wildcards/*/forward/**');
-parser.match('/test/withargs/100/wildcards/any/forward/any/thing/else/after'); // match with param 100
+RouteParser('/route/:params').match('/route/100'); // match with params
+final parser = RouteParser('/test/withparams/:id/wildcards/*/forward/**');
+parser.match('/test/withparams/100/wildcards/any/forward/any/thing/else/after'); // match with param 100
 ```
 
 ## Wildcards
