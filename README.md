@@ -1,6 +1,6 @@
 # Route Parser
 
-A route parsing package.
+A route parsing dart package.
 
 Originally created by @lukepighetti for fluro 2.0.
 
