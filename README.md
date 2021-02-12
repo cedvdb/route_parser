@@ -21,8 +21,7 @@ parser.match('/test/withargs/100/wildcards/any/forward/any/thing/else/after'); /
 
 ## Wildcards
 
-  - * any for a specific segment
-  - ** any look ahead
-  - : gets param
+  - `*` any for a specific segment
+  - `**` any look ahead
+  - `:` gets param
 
-[tracker]: http://example.com/issues/replaceme
