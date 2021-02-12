@@ -1,6 +1,8 @@
-A route parsing library.
+# Route Parser
 
-Originally created by x for fluro 2.0. This is a slightly modified version
+A route parsing package.
+
+Originally created by @lukepighetti for fluro 2.0.
 
 ## Usage
 
