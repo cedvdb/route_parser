@@ -26,6 +26,17 @@ class RouteParser {
     final toMatchIsShorter = toMatch.segments.length < segments.length;
     // if toMatch is longer the wild card any_forward could make it still be matching
     final toMatchIsLonger = toMatch.segments.length > segments.length;
+    final getResult = () => RouteMatch(
+          matches: matches.every((m) => m),
+          pathParameters: params,
+          path: path,
+          route: _uri.path,
+        );
+
+    if (toMatchIsShorter) {
+      matches.add(false);
+      return getResult();
+    }
 
     for (var i = 0; i < segments.length; i++) {
       final segment = _uri.pathSegments[i];
@@ -33,23 +44,19 @@ class RouteParser {
       final isLastSegment = i == segments.length - 1;
 
       // if toMatch is shorter it's defacto not a full match
-      if (toMatchIsShorter) {
-        matches.add(false);
-        break;
-      }
 
       // if we reach a match any nested wildcard then whatever is after
       // is going to be matching and what is before has been checked
       if (segment == Wildcards.any_forward) {
         matches.add(true);
-        break;
+        return getResult();
       }
 
       // we checked for the match any_forward wildcard, at this point if
       // toMatch is longer, it is no longer a match
       if (isLastSegment && toMatchIsLonger) {
         matches.add(false);
-        break;
+        return getResult();
       }
 
       if (segment == Wildcards.any) {
@@ -72,15 +79,10 @@ class RouteParser {
         continue;
       } else {
         matches.add(false);
-        break;
+        return getResult();
       }
     }
 
-    return RouteMatch(
-      matches: matches.every((m) => m),
-      pathParameters: params,
-      path: path,
-      route: _uri.path,
-    );
+    return getResult();
   }
 }
