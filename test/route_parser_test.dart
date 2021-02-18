@@ -65,13 +65,6 @@ void main() {
       expect(params.length, equals(2));
     });
 
-    // test('should do all 3 at the same time', () {
-    //   final path = '/teams/:teamId/*/route/**';
-    //   final match = RouteParser(path).parse('/teams/100/any/route/any/ahead');
-    //   expect(match.matches, isTrue);
-    //   expect(match.parameters['teamId'], equals('100'));
-    // });
-
     test('should format silly paths to prevent typos', () {
       final path = '/test/route';
       expect(RouteParser.sanitize('test/route'), equals(path));
