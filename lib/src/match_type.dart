@@ -3,7 +3,8 @@ enum MatchType {
   /// a full match must match exactly the pattern
   full,
 
-  /// in a partial match the url being matched *can* be longer, but the matching pattern
-  /// will be exactly as is in the path
+  /// in a partial match the route being matched *can* be longer
+  ///
+  /// RouteParser('/route') will match '/route' and '/route/any'
   partial,
 }
