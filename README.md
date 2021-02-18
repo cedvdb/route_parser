@@ -25,9 +25,10 @@ RouteParser('/route/:id').parse('/route/100'); // match true with params['id'] =
   - `exact`: the path matched cannot be longer
   - `partial`: the path matched can be longer
   
-## MatchTypes vs WildCards
+## Note on MatchTypes vs WildCards modification
 
 Previously this package was using wild cards for example `/route/*`.
 
-Now the package uses `/route, MatchType.partial` to match because the package can be used in routing libraries
-where we do not know what the user will input. If the library created wants the default to be a partial match it can pass the partial match type
+Now the package uses `/route, MatchType.partial` to match.
+
+That is for convenience in the codebase. 
