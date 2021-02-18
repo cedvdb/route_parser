@@ -54,20 +54,20 @@ void main() {
     test('should format silly paths to prevent typos', () {
       final path = '/test/route';
       final path2 = '/test/**';
-      expect(RouteParser.format('test/route'), equals(path));
-      expect(RouteParser.format('test/route/'), equals(path));
-      expect(RouteParser.format('/test/route/'), equals(path));
-      expect(RouteParser.format('////test///route///'), equals(path));
-      expect(RouteParser.format('  / test / route'), equals(path));
-      expect(RouteParser.format('test/route'), equals(path));
-      expect(RouteParser.format('   test  /  route   /  '), equals(path));
-      expect(RouteParser.format('/test/route/'), equals(path));
-      expect(RouteParser.format('// / / test / //route///'), equals(path));
-      expect(RouteParser.format('/not/route'), isNot(path));
-      expect(RouteParser.format('/   not  / route'), isNot(path));
+      expect(RouteParser.sanitize('test/route'), equals(path));
+      expect(RouteParser.sanitize('test/route/'), equals(path));
+      expect(RouteParser.sanitize('/test/route/'), equals(path));
+      expect(RouteParser.sanitize('////test///route///'), equals(path));
+      expect(RouteParser.sanitize('  / test / route'), equals(path));
+      expect(RouteParser.sanitize('test/route'), equals(path));
+      expect(RouteParser.sanitize('   test  /  route   /  '), equals(path));
+      expect(RouteParser.sanitize('/test/route/'), equals(path));
+      expect(RouteParser.sanitize('// / / test / //route///'), equals(path));
+      expect(RouteParser.sanitize('/not/route'), isNot(path));
+      expect(RouteParser.sanitize('/   not  / route'), isNot(path));
 
-      expect(
-          RouteParser.format('/test/**/something/meaningless'), equals(path2));
+      expect(RouteParser.sanitize('/test/**/something/meaningless'),
+          equals(path2));
     });
   });
 }

@@ -1,4 +1,4 @@
-import 'route_formatter.dart';
+import 'route_sanitizer.dart';
 import 'route_match.dart';
 import 'wildcards.dart';
 
@@ -11,10 +11,10 @@ class RouteParser {
 
   List<String> get segments => _uri.pathSegments;
 
-  RouteParser(String path) : _uri = Uri(path: format(path));
+  RouteParser(String path) : _uri = Uri(path: sanitize(path));
 
-  static String format(String path) {
-    return RouteFormatter.format(path);
+  static String sanitize(String path) {
+    return RouteSanitizer.sanitize(path);
   }
 
   /// matches a path against this route.
@@ -22,9 +22,7 @@ class RouteParser {
     final toMatch = RouteParser(path);
     final matches = <bool>[];
     final params = <String, String>{};
-    // if toMatch is shorter it's defacto not a full match
     final toMatchIsShorter = toMatch.segments.length < segments.length;
-    // if toMatch is longer the wild card any_forward could make it still be matching
     final toMatchIsLonger = toMatch.segments.length > segments.length;
     final getResult = () => RouteMatch(
           matches: matches.every((m) => m),
@@ -33,6 +31,7 @@ class RouteParser {
           route: _uri.path,
         );
 
+    // if toMatch is shorter it's defacto not a full match
     if (toMatchIsShorter) {
       matches.add(false);
       return getResult();
@@ -43,11 +42,9 @@ class RouteParser {
       final toMatchSegment = toMatch.segments[i];
       final isLastSegment = i == segments.length - 1;
 
-      // if toMatch is shorter it's defacto not a full match
-
       // if we reach a match any nested wildcard then whatever is after
       // is going to be matching and what is before has been checked
-      if (segment == Wildcards.any_forward) {
+      if (segment == Wildcards.any) {
         matches.add(true);
         return getResult();
       }
@@ -55,19 +52,19 @@ class RouteParser {
       // we checked for the match any_forward wildcard, at this point if
       // toMatch is longer, it is no longer a match
       if (isLastSegment && toMatchIsLonger) {
-        matches.add(false);
-        return getResult();
-      }
-
-      if (segment == Wildcards.any) {
-        matches.add(true);
-        // check next segment
-        continue;
+        if (toMatch.segments[i + 1] == Wildcards.any) {
+          matches.add(true);
+          return getResult();
+        } else if (toMatch.segments[i + 1] == Wildcards.any_child) {
+        } else {
+          matches.add(false);
+          return getResult();
+        }
       }
 
       // we extract the param
       if (segment.startsWith(Wildcards.param)) {
-        final key = segment.replaceFirst(':', '');
+        final key = segment.replaceFirst(Wildcards.param, '');
         params[key] = toMatchSegment;
         matches.add(true);
         continue;
