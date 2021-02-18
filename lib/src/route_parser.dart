@@ -1,5 +1,3 @@
-import 'wildcards.dart';
-
 import 'parsing_result.dart';
 import 'match_type.dart';
 
@@ -75,17 +73,10 @@ class RouteParser {
   }
 
   /// sanitize path by removing leading and trailing spaces and backslashes
-  /// and removing everything after a ** wildcard
   static String sanitize(String path) {
     path = '/' +
         path
             .replaceAll(RegExp(r'^\s+|\s+$'), '')
             .replaceAll(RegExp(r'^\/+|\/+$'), '');
-    // remove everything after a match any nested
-    final matchAllIndex = path.indexOf(Wildcards.any_forward);
-    if (matchAllIndex < 0) {
-      return path;
-    }
-    return path.substring(0, matchAllIndex + Wildcards.any_forward.length);
   }
 }
