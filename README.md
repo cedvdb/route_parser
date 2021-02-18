@@ -12,9 +12,9 @@ import 'package:route_parser/route_parser.dart';
 
 // match 
 RouteParser('/route').match('/route'); // true
-RouteParser('/route', MatchType.partial).match('/route'); // true
+RouteParser('/route').match('/route', MatchType.partial); // true
 RouteParser('/route').match('/route/any'); // false
-RouteParser('/route', MatchType.partial).match('/route/any'); //true
+RouteParser('/route').match('/route/any', MatchType.partial); //true
 // parse
 RouteParser('/route/:id').parse('/route/100'); // match true with params['id'] = 100
 ```
@@ -27,8 +27,10 @@ RouteParser('/route/:id').parse('/route/100'); // match true with params['id'] =
   
 ## Note on MatchTypes vs WildCards modification
 
-Previously this package was using wild cards for example `/route/*`.
+In version 0.0.1 this package was using wild cards for example `/route/*`.
 
-Now the package uses `/route, MatchType.partial` to match.
+Since version 0.1.0 the package uses `/route, MatchType.partial` to match.
 
-That is for convenience in the codebase. 
+This is because the expectations for the wildcard seem to differ whether `/route/*` should match `/route` or not.
+
+If a convention is set 
