@@ -1,6 +1,6 @@
 name: route_parser
 description: A route parsing package for matching routes against each other and extracting params
-# version: 1.0.0
+# version: 0.0.2
 # homepage: https://www.example.com
 
 environment:
