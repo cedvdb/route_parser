@@ -1,6 +1,6 @@
 ## 0.1.0
 
-- Breaking change: Wildcard replaced with match type
+- Breaking change: Wildcard replaced with MatchType
 
 ## 0.0.1
 

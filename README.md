@@ -24,6 +24,7 @@ RouteParser('/route/:id').parse('/route/100'); // match true with params['id'] =
 
   - `exact`: the path matched cannot be longer
   - `partial`: the path matched can be longer
+
   
 ## Note on MatchTypes vs WildCards modification
 
