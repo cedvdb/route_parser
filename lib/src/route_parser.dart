@@ -19,9 +19,7 @@ class RouteParser {
     final toMatch = RouteParser(path);
     final matches = <bool>[];
     final params = <String, String>{};
-    // if toMatch is shorter it's defacto not a full match
     final toMatchIsShorter = toMatch.segments.length < segments.length;
-    // if toMatch is longer and the matchType is partial, it could it still be matching
     final toMatchIsLonger = toMatch.segments.length > segments.length;
     final getResult = () => ParsingResult(
           matches: matches.every((m) => m),
@@ -30,7 +28,14 @@ class RouteParser {
           patternPath: _uri.path,
         );
 
+    // if toMatch is shorter it's defacto not a full match
     if (toMatchIsShorter) {
+      matches.add(false);
+      return getResult();
+    }
+
+    // if toMatch is longer and the matchType is partial, it could it still be matching
+    if (matchType == MatchType.full && toMatchIsLonger) {
       matches.add(false);
       return getResult();
     }
@@ -38,18 +43,6 @@ class RouteParser {
     for (var i = 0; i < segments.length; i++) {
       final patternSegment = segments[i];
       final toMatchSegment = toMatch.segments[i];
-      final isLastPatternSegment = i == segments.length - 1;
-
-      // we checked for the match any_forward wildcard, at this point if
-      // toMatch is longer, it is no longer a match
-      if (isLastPatternSegment && toMatchIsLonger) {
-        if (matchType == MatchType.partial) {
-          matches.add(true);
-        } else {
-          matches.add(false);
-        }
-        return getResult();
-      }
 
       // we extract the param
       if (patternSegment.startsWith(':')) {
@@ -74,7 +67,7 @@ class RouteParser {
 
   /// sanitize path by removing leading and trailing spaces and backslashes
   static String sanitize(String path) {
-    path = '/' +
+    return '/' +
         path
             .replaceAll(RegExp(r'^\s+|\s+$'), '')
             .replaceAll(RegExp(r'^\/+|\/+$'), '');
