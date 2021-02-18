@@ -10,12 +10,12 @@ class RouteParser {
   RouteParser(String path) : _uri = Uri(path: sanitize(path));
 
   /// matches a path against this route.
-  bool match(String path, [MatchType matchType = MatchType.full]) {
+  bool match(String path, [MatchType matchType = MatchType.exact]) {
     return parse(path, matchType).matches;
   }
 
   /// parses path against this route
-  ParsingResult parse(String path, [MatchType matchType = MatchType.full]) {
+  ParsingResult parse(String path, [MatchType matchType = MatchType.exact]) {
     final toMatch = RouteParser(path);
     final matches = <bool>[];
     final params = <String, String>{};
@@ -35,7 +35,7 @@ class RouteParser {
     }
 
     // if toMatch is longer and the matchType is partial, it could it still be matching
-    if (matchType == MatchType.full && toMatchIsLonger) {
+    if (matchType == MatchType.exact && toMatchIsLonger) {
       matches.add(false);
       return getResult();
     }
