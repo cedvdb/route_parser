@@ -1,24 +1,28 @@
 /// The result of trying to match a path to a route.
-class RouteMatch {
-  RouteMatch({
+class ParsingResult {
+  ParsingResult({
     required this.matches,
     required this.pathParameters,
-    required this.route,
+    required this.patternPath,
     required this.path,
   });
 
   /// Used if a route match wasn't found in a list of routes.
-  RouteMatch.notFound({required String path})
+  ParsingResult.notFound({required String path, required pattern})
       : matches = false,
         pathParameters = const {},
         path = path,
-        route = '';
+        patternPath = pattern;
 
-  /// The route being referenced
-  final String route;
-
-  /// The path being routed
+  /// The route path that was matched
+  ///
+  /// ie `/route/123`
   final String path;
+
+  /// The route path being matched onto
+  ///
+  /// ie `/route/:id`
+  final String patternPath;
 
   /// If the [path] matches the [route]
   final bool matches;
@@ -44,6 +48,6 @@ class RouteMatch {
 
   @override
   String toString() {
-    return 'RouteMatch( matches: $matches, route: $route, path: $path, pathParameters: $pathParameters)';
+    return 'ParsingResult(path: $path, pattern: $patternPath, matches: $matches, pathParameters: $pathParameters)';
   }
 }
