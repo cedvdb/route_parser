@@ -14,7 +14,8 @@ import 'package:route_parser/route_parser.dart';
 RouteParser('/route').match('/route'); // true
 RouteParser('/route', MatchType.partial).match('/route'); // true
 RouteParser('/route').match('/route/any'); // false
-RouteParser('/route', MatchType.partial).match('/route/any/with/look/ahead'); //true
+RouteParser('/route', MatchType.partial).match('/route/any'); //true
+// parse
 RouteParser('/route/:id').parse('/route/100'); // match true with params['id'] = 100
 ```
 
