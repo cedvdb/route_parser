@@ -1,5 +1,6 @@
 import 'parsing_result.dart';
 import 'match_type.dart';
+import 'dart:math';
 
 /// Representation of a route that can then be parsed and matched against other types
 class RouteParser {
@@ -19,28 +20,22 @@ class RouteParser {
     final toMatch = RouteParser(path);
     final matches = <bool>[];
     final params = <String, String>{};
+    final matchingSegments = [];
     final toMatchIsShorter = toMatch.segments.length < segments.length;
     final toMatchIsLonger = toMatch.segments.length > segments.length;
-    final getResult = () => ParsingResult(
-          matches: matches.every((m) => m),
-          pathParameters: params,
-          path: path,
-          patternPath: _uri.path,
-        );
+    final minLength = min(segments.length, toMatch.segments.length);
 
-    // if toMatch is shorter it's defacto not a full match
+    // if toMatch is shorter it's defacto not a match
     if (toMatchIsShorter) {
       matches.add(false);
-      return getResult();
     }
 
     // if toMatch is longer and the matchType is partial, it could it still be matching
     if (matchType == MatchType.exact && toMatchIsLonger) {
       matches.add(false);
-      return getResult();
     }
 
-    for (var i = 0; i < segments.length; i++) {
+    for (var i = 0; i < minLength; i++) {
       final patternSegment = segments[i];
       final toMatchSegment = toMatch.segments[i];
 
@@ -48,6 +43,7 @@ class RouteParser {
       if (patternSegment.startsWith(':')) {
         final key = patternSegment.replaceFirst(':', '');
         params[key] = toMatchSegment;
+        matchingSegments.add(toMatchSegment);
         matches.add(true);
         continue;
       }
@@ -55,14 +51,21 @@ class RouteParser {
       // Exact segment match
       if (toMatchSegment == patternSegment) {
         matches.add(true);
+        matchingSegments.add(toMatchSegment);
         continue;
       } else {
         matches.add(false);
-        return getResult();
+        break;
       }
     }
 
-    return getResult();
+    return ParsingResult(
+      matches: matches.every((m) => m),
+      pathParameters: params,
+      path: path,
+      patternPath: _uri.path,
+      matchingPath: '/' + matchingSegments.join('/'),
+    );
   }
 
   /// sanitize path by removing leading and trailing spaces and backslashes

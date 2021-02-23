@@ -23,7 +23,7 @@ void main() {
       expect(RouteParser('test/route').parse(' //test/route/ '), isMatch());
     });
 
-    test('should match partially', () {
+    test('should match partial routes', () {
       final path = '/test/route';
 
       expect(
@@ -63,6 +63,15 @@ void main() {
       expect(params['teamId'], equals('x'));
       expect(params['userId'], equals('y'));
       expect(params.length, equals(2));
+    });
+
+    test('result should give result of partial match path', () {
+      final path = '/teams/:teamId';
+      final result =
+          RouteParser(path).parse('/teams/x/users/y', MatchType.partial);
+      expect(result.path, equals('/teams/x/users/y'));
+      expect(result.matchingPath, equals('/teams/x'));
+      expect(result.patternPath, equals('/teams/:teamId'));
     });
 
     test('should format silly paths to prevent typos', () {

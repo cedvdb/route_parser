@@ -2,22 +2,21 @@
 class ParsingResult {
   ParsingResult({
     required this.matches,
-    required this.pathParameters,
-    required this.patternPath,
     required this.path,
+    required this.patternPath,
+    required this.matchingPath,
+    required this.pathParameters,
   });
-
-  /// Used if a route match wasn't found in a list of routes.
-  ParsingResult.notFound({required String path, required pattern})
-      : matches = false,
-        pathParameters = const {},
-        path = path,
-        patternPath = pattern;
 
   /// The route path that was matched
   ///
   /// ie `/route/123`
   final String path;
+
+  /// The part of the route
+  ///
+  /// ie `/route` when the path is `/route/123` and the route pattern is `/route/:id`
+  final String matchingPath;
 
   /// The route path being matched onto
   ///
