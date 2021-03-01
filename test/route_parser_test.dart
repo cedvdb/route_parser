@@ -1,5 +1,4 @@
 import 'package:route_parser/route_parser.dart';
-import 'package:route_parser/src/match_type.dart';
 import 'package:test/test.dart';
 
 import 'matchers.dart';
@@ -27,32 +26,32 @@ void main() {
       final path = '/test/route';
 
       expect(
-        RouteParser('/').parse('/any/route', MatchType.partial),
+        RouteParser('/').parse('/any/route', matchChildren: true),
         isMatch(),
       );
 
       expect(
-        RouteParser(path).parse('test/route', MatchType.partial),
+        RouteParser(path).parse('test/route', matchChildren: true),
         isMatch(),
       );
       expect(
-        RouteParser(path).parse('/test/route/more', MatchType.partial),
+        RouteParser(path).parse('/test/route/more', matchChildren: true),
         isMatch(),
       );
       expect(
-        RouteParser(path).parse('/another/route', MatchType.partial),
+        RouteParser(path).parse('/another/route', matchChildren: true),
         isNotMatch(),
       );
       expect(
-        RouteParser(path).parse('/', MatchType.partial),
+        RouteParser(path).parse('/', matchChildren: true),
         isNotMatch(),
       );
       expect(
-        RouteParser(path).parse('/test', MatchType.partial),
+        RouteParser(path).parse('/test', matchChildren: true),
         isNotMatch(),
       );
       expect(
-        RouteParser(path).parse('test/another', MatchType.partial),
+        RouteParser(path).parse('test/another', matchChildren: true),
         isNotMatch(),
       );
     });
@@ -68,7 +67,7 @@ void main() {
     test('result should give result of partial match path', () {
       final path = '/teams/:teamId';
       final result =
-          RouteParser(path).parse('/teams/x/users/y', MatchType.partial);
+          RouteParser(path).parse('/teams/x/users/y', matchChildren: true);
       expect(result.path, equals('/teams/x/users/y'));
       expect(result.matchingPath, equals('/teams/x'));
       expect(result.patternPath, equals('/teams/:teamId'));
