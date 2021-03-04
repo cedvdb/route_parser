@@ -84,5 +84,15 @@ void main() {
       expect(RouteParser.sanitize('/not/route'), isNot(path));
       expect(RouteParser.sanitize(' /not/route'), isNot(path));
     });
+
+    test('Should reverse params', () {
+      final params = {'id': '3', 'otherId': '4'};
+      expect(RouteParser('/route/:id').reverse(params), equals('/route/3'));
+      expect(RouteParser('/route/:id/other/:otherId').reverse(params),
+          equals('/route/3/other/4'));
+      expect(RouteParser('/route/:id/not/:not').reverse(params),
+          equals('/route/3/not/:not'));
+      expect(RouteParser('/').reverse(params), equals('/'));
+    });
   });
 }

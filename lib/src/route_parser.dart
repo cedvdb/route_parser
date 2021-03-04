@@ -14,6 +14,21 @@ class RouteParser {
     return parse(path, matchChildren: matchChildren).matches;
   }
 
+  /// adds params to a route
+  String reverse(Map<String, String> params) {
+    final segments = _uri.pathSegments.map((segment) {
+      if (segment.startsWith(':')) {
+        final key = segment.replaceFirst(':', '');
+        final param = params[key];
+        if (param != null) {
+          return param;
+        }
+      }
+      return segment;
+    });
+    return '/' + segments.join('/');
+  }
+
   /// parses path against this route
   ParsingResult parse(String path, {bool matchChildren = false}) {
     final toMatch = RouteParser(path);
