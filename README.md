@@ -2,8 +2,6 @@
 
 A route parsing dart package.
 
-Originally created by @lukepighetti for fluro 2.0, it has now been modified subtantially.
-
 ## Usage
 
 
